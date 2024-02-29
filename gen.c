@@ -1,5 +1,58 @@
 
 
+void make_activity(int force)
+{
+  varset_t *V;
+  char *path;
+
+  path= mkpath(aPT_JAVASRC, cvars.package_dir, aFN_ACTIVITY, NULL);
+
+  if (!force && file_exists(path)) return ;
+
+  V= varset_init(NULL);
+  varset_put(V, "package_name", cvars.package_name);
+
+  write_file_string(path, replace_vars(data_get(aFN_ACTIVITY,NULL), V));
+}
+
+void make_dirs()
+{
+  int i;
+
+  static const char *dirs[]=
+  {
+   "!" aPT_GENJAVA,
+   "!" aPT_JAVAOBJ,
+   "!" aPT_JAVASRC,
+   aPT_NATIVESRC,
+   aPT_DEPx86,
+   aPT_DEPx86_64,
+   aPT_DEPaarch64,
+   aPT_DEParmv7a,
+   aPT_LIBx86,
+   aPT_LIBx86_64,
+   aPT_LIBaarch64,
+   aPT_LIBarmv7a,
+   aPT_RESVALUES,
+   NULL
+  };
+  for(i=0;dirs[i];i++)
+    vexec( "mkdir", "-p", dirs[i][0]=='!' ?
+                            mkpath(dirs[i]+1, cvars.package_dir, NULL) : 
+                            (char*) dirs[i],
+           NULL, "making dir %s\n", dirs[i]);
+}
+
+
+void make_keystore()
+{
+  const char *d;
+  size_t sz;
+  d= data_get(aFN_KEYSTORE, &sz);
+  write_file_blob(aPT_KEYSTORE, d, sz);
+}
+
+
 void encode_permissions(varset_t *S)
 {
   char *perm;
