@@ -214,7 +214,7 @@ void link_native(target_t *target, int force)
   if (update) 
     vexec(get_native_compiler(CT_LD, target),
           VXMA, seprep(get_native_flags(CT_LD, target),
-                       varset_putm(varset_target(),
+                       varset_putm(varset_target(target),
                                    "output", output,
                                    "inputs", strbuf_collect(B), 
                                    NULL)),
