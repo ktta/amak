@@ -88,9 +88,8 @@ target_t known_targets[]=
 target_t *find_target(char *target)
 {
   target_t *T;
-  int i;
   char *s;
-  for(T=known_targets;s=T->name;T++) if (!strcmp(s, target))  return T;
+  for(T=known_targets;(s=T->name);T++) if (!strcmp(s, target))  return T;
   die("unknown target %s\n", target);
   return NULL;
 }

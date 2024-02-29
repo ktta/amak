@@ -4,7 +4,7 @@ static void compile_natives(int force)
 {
   int i;
   target_t *tgt;
-  for(i=0;tgt=cvars.targets[i];i++)
+  for(i=0;(tgt=cvars.targets[i]);i++)
   {
     compile_native(tgt, force);
     link_native(tgt, force);

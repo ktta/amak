@@ -2,20 +2,22 @@
 typedef struct varset { struct varset *up; strmap_t map; } varset_t;
 struct varstore { char *name, *value; };
 
-void varset_put(varset_t  *set, char *name, char *value)
+varset_t* varset_put(varset_t  *set, char *name, char *value)
 {
   struct varstore *V;
   V= strmap_find(&set->map, name);
-  if (V) { V->value= value; return ; }
+  if (V) { V->value= value; return set; }
   V= malloc(sizeof(*V));
   V->name= strdup(name);
   V->value= strdup(value);
   strmap_insert(&set->map, V->name, V);
+  return set;
 }
 
-void varset_putif(varset_t  *set, char *name, char *value)
+varset_t* varset_putif(varset_t  *set, char *name, char *value)
 {
   if (value) varset_put(set, name, value);
+  return set;
 }
 
 char* varset_get(varset_t *set, char *name)
@@ -99,7 +101,7 @@ char **seprep(char *str, varset_t *V)
 varset_t *varset_putm(varset_t *V, ...)
 {
   va_list ap;
-  char *name, *value;
+  char *name;
   va_start(ap, V);
   while((name=va_arg(ap,char*))) varset_put(V, name, va_arg(ap,char*));
   va_end(ap);

@@ -15,7 +15,7 @@ void make_apk(int force)
     if (stale(apkpath, keystore)
         || stale(apkpath, aPT_RESOURCESZIP) 
         || stale(apkpath, aPT_CLASSESDEX)) goto doit;
-    for(i=0;target=cvars.targets[i];i++)
+    for(i=0;(target=cvars.targets[i]);i++)
     {
       if (stale(apkpath, mkpath(target->libdir, aFN_LIBMAINSO, NULL)))
          goto doit;
@@ -32,7 +32,7 @@ doit:
               "copying java code\n");
  
   scallenz(chdir("build"), "chdir(build)");
-  for(i=0;target=cvars.targets[i];i++)
+  for(i=0;(target=cvars.targets[i]);i++)
   {
     vexec("zip", "-u", aPT_UNALIGNEDAPK, "-p",
                  mkpath(target->libdir+strlen("build/"), aFN_LIBMAINSO, NULL),

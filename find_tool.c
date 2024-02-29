@@ -5,7 +5,6 @@ char *tool_path(char *tool_name)
 {
   char *user_defined;
   char *bt_ver, *bt_dir, *bt_search;
-  char *raw;
   char *lv;
   static varset_t *td;
 

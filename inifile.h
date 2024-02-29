@@ -664,15 +664,6 @@ static const char *ini_section_name(const char *name)
   return (name && name[0]) ? name: "=root=";
 }
 
-
-
-static int ini_prepare_file_name
-    (inifile_t *F, const char *fmt, va_list ap)
-{
-  if (!F->file_name) return 1;
-  return 0;
-}
-
 static void ini_close(inifile_t *F)
 {
   if (F->input)
@@ -689,7 +680,6 @@ static void ini_close(inifile_t *F)
 }
 
 
-static void ini_free_all();
 
 
 static int ini_getline(inifile_t *F)
@@ -836,7 +826,6 @@ static void ini_parse_value
   }
   return ;
 
-free_key:
   free(key);
 }
 
@@ -895,7 +884,6 @@ static void ini_destroy(inifile_t *F)
 {
   struct inisection *sec;
   struct inivalue *val;
-  int i;
   ini_close(F);
   ini_free_p((void**) &F->file_name);
   while((sec=strmap_destroy(&F->sections)))

@@ -1,35 +1,29 @@
 
 
 
+
 void compile_java(int force)
 {
-  char **cmd, **Input;
-  char **java_sources, *S;
+  char **java_sources, *S,*src;
   int i;
   varset_t *V;
-  args_t *A;
-  int na;
 
   V= varset_cvars();
-  A= arg_init();
 
-  arg_put(A, replace_vars(ini_getstr(cfg,"java", "javac", DEFVAL_JAVAC), V));
-  arg_put_split(A, replace_vars(ini_getstr(cfg, "java", "cflags",
-                                           DEFVAL_JAVACFLAGS),
-                                V));
-  arg_put(A, "dummy.java");
-  arg_put(A, mkpath( aPT_GENJAVA , cvars.package_dir, "R.java", NULL));
-  cmd= arg_get(A, &na);
-  Input= cmd+na-2;
+  varset_put(V, "Rjava", 
+             mkpath( aPT_GENJAVA , cvars.package_dir, "R.java", NULL));
 
   java_sources= find_files(aPT_JAVASRC, "java", 1);
 
-  for(i=0;S=java_sources[i];i++)
+  for(i=0;(S=java_sources[i]);i++)
   {
-    *Input= mkpath(aPT_JAVASRC, S, NULL);
-    if (force || 
-        reqisnewer(mkpath(aPT_JAVAOBJ, repsfx(S, ".java", ".class"), NULL),
-                   *Input))
-      exec_program(cmd, "compiling %s\n", basename(strdup(S)));
+    src= mkpath(aPT_JAVASRC, S, NULL); // put the directory back in
+    if (force ||  stale(mkpath(aPT_JAVAOBJ, 
+                               repsfx(S, ".java", ".class"), NULL),
+                        src))
+      vexec(replace_vars(ini_getstr(cfg,"java", "javac", DEFVAL_JAVAC), V),
+            VXMA, seprep(ini_getstr(cfg, "java", "cflags", DEFVAL_JAVACFLAGS),
+                         varset_put(V, "input", src)),
+            NULL, "compiling %s\n", basename(strdup(S)));
   }
 }

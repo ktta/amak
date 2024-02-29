@@ -1,13 +1,7 @@
 
-
-
-
-
 void make_dirs()
 {
-  char buf[2000];
   int i;
-  char *package_name, *package_dir;
 
   static const char *dirs[]=
   {
@@ -26,19 +20,9 @@ void make_dirs()
    aPT_RESVALUES,
    NULL
   };
-  char *argv[4];
-  int ai;
-  printf("making directories\n");
   for(i=0;dirs[i];i++)
-  {
-    ai= 0;
-    argv[ai++]= "mkdir";
-    argv[ai++]= "-p";
-    if (dirs[i][0]=='!')
-      argv[ai++]= mkpath(dirs[i]+1, cvars.package_dir, NULL);
-    else
-      argv[ai++]= (char*) dirs[i];
-    argv[ai]= 0;
-    exec_program(argv,NULL);
-  }
+    vexec( "mkdir", "-p", dirs[i][0]=='!' ?
+                            mkpath(dirs[i]+1, cvars.package_dir, NULL) : 
+                            (char*) dirs[i],
+           NULL, "making dir %s\n", dirs[i]);
 }
