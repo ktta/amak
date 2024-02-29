@@ -1,0 +1,3 @@
+
+
+inifile_t *cfg;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BEGIN_INCLUDE(manifest) -->
+<manifest
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        package="%package_name%"
+        android:versionCode="1"
+        android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="%android_version%" />
+       %permissions%
+
+    <!-- This .apk has Java code, so set hasCode to true. -->
+    <application android:label="%display_name%" android:hasCode="true">
+
+<!-- we don't want our application to restart on any configuration change.
+     thus the huge configChanges declaration -->
+        <activity
+             android:name="%package_name%.MainActivity"
+             android:label="%display_name%"
+             android:screenOrientation="%orientation%"
+             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|density|screenSize|smallestScreenSize">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
+        </activity>
+    </application>
+
+</manifest> 
+<!-- END_INCLUDE(manifest) -->
+

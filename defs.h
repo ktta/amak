@@ -1,0 +1,1 @@
+#define INIFILE_IMPLEMENT
