@@ -19,11 +19,12 @@ void compile_resources(int force)
   V= varset_cvars();
 
   vexec(tool_path("aapt2"),
-        VXMA, seprep(ini_getstr(cfg, "cflags", DEFVAL_AAPT2_CFLAGS),V),
+        VXMA, seprep(ini_getstr(cfg, "aapt2", "cflags",
+                                DEFVAL_AAPT2_CFLAGS),V),
         NULL, "compiling resources\n");
 
   vexec(tool_path("aapt2"),
-        VXMA, seprep(ini_get_str(cfg, "aapt2", "lflags",
-                                 DEFVAL_AAPT2_LFLAGS), V),
+        VXMA, seprep(ini_getstr(cfg, "aapt2", "lflags",
+                                DEFVAL_AAPT2_LFLAGS), V),
         NULL, "linking resources\n");
 }
