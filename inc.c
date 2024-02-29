@@ -19,7 +19,6 @@
 #include "cook.c"
 #include "data.c"
 #include "clean.c"
-#include "perm.c"
 #include "fileop.c"
 #include "mkmanifest.c"
 #include "mkkey.c"
