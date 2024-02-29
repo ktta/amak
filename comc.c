@@ -37,13 +37,13 @@ char *tool_names[]= { "cc", "cxx", "ld" };
 
 // tool is cc or cxx..
 
-void get_native_compiler(int tool, target_t *target)
+char* get_native_compiler(int tool, target_t *target)
 {
   char *S;
   char *bin, *ndk_search;
   varset_t *V;
 
-  if (target->tools[tool].bin) return ;
+  if ((S=target->tools[tool].bin)) return S;
 
   V= varset_target(target);
 
@@ -85,28 +85,22 @@ void get_native_compiler(int tool, target_t *target)
   if (!S) die("can't find compiler %s\n", tool_names[tool]);
 
 found:
-  target->tools[tool].bin= S; 
+  return target->tools[tool].bin= S; 
 }
 
 char *null2empty(char *x) { return x ? x : ""; }
 
 
-static int aindex(char *str, char **arr)
-{
-  int i;
-  for(i=0;arr[i];i++) if (!strcmp(str, arr[i])) return i;
-  return 100;
-}
-
-void get_native_flags(int tool, target_t *target)
+char* get_native_flags(int tool, target_t *target)
 {
   char *flags_name, *oflags_name;
   char *flags_a, *oflags_a;
   char *flags_c, *oflags_c;
   char *flags;
   char *tn;
+  char *S;
 
-  if (target->tools[tool].flags) return ;
+  if ((S=target->tools[tool].flags)) return S;
   tn= tool_names[tool];
 
   flags_name= strcom(tn, "flags", NULL);
@@ -126,7 +120,7 @@ void get_native_flags(int tool, target_t *target)
   flags_a= ini_getstrn(cfg, target->name, flags_name);
   if (flags_a) flags= strcom(flags, " ", flags_a, NULL);
 
-  target->tools[tool].flags= flags;
+  return target->tools[tool].flags= flags;
 }
 
 char **read_dep(char *fn)
@@ -158,29 +152,19 @@ char **read_dep(char *fn)
 void compile_native_file
    (char *file, int tool, target_t *target, varset_t *V, int force)
 {
-  char *obj, *oname, *dep, *src, **deps;
-
-  get_native_compiler(tool, target);
-  get_native_flags(tool, target);
+  char *obj, *oname, *dep, *src;
 
   obj= mkpath(target->libdir, oname=repdotsfx(file, ".o"),NULL);
   src= mkpath(aPT_NATIVESRC, file, NULL);
   dep= strcom(target->depdir, "/", oname, ".dep", NULL);
 
-  if (!force && !reqisnewer(obj, src) && (deps=read_dep(dep)))
-  {
-    int i;
-    for(i=0;deps[i];i++)
-       if (reqisnewer(obj, deps[i]))
-          break;
-    if (!deps[i]) return ;
-  }
-
-  varset_put(V, "input", src);
-  varset_put(V, "output", obj);
-  varset_put(V, "depend", dep);
-  vexec(target->tools[tool].bin, VXMA, seprep(target->tools[tool].flags, V),
-        NULL, "compiling [%s] %s\n", target->name, file);
+  if (force || stale(obj, src) || stalea(obj, read_dep(dep)))
+    vexec(get_native_compiler(tool, target),
+          VXMA, seprep(get_native_flags(tool, target), 
+                       varset_putm(V, "input", src,
+                                      "output", obj,
+                                      "depend", dep, NULL)),
+          NULL, "compiling [%s] %s\n", target->name, file);
 }
 
 void compile_native(target_t *target,int force)
@@ -205,15 +189,11 @@ void compile_native(target_t *target,int force)
 
 void link_native(target_t *target, int force)
 {
-  varset_t *V;
   file_iter_t file;
   strbuf_t *B;
   int update;
   char *output;
-  char *src;
-
-  V= varset_target(target);
-  
+ 
   update= 0;
   B= strbuf_init();
   output= mkpath(target->libdir, aFN_LIBMAINSO, NULL);
@@ -222,6 +202,7 @@ void link_native(target_t *target, int force)
   while(file_iter_get(&file))
     if (hasdotsfx(file.name, ".o"))
     {
+      char *src;
       src=mkpath(target->libdir, file.name, NULL);
       if (force || reqisnewer(output, src)) update= 1;
       strbuf_puts(B, " ");
@@ -230,13 +211,12 @@ void link_native(target_t *target, int force)
   file_iter_end(&file);
   strbuf_puts(B, " ");
 
-  if (!update) return ;
-  
-  get_native_compiler(CT_LD, target);
-  get_native_flags(CT_LD, target);
-
-  varset_put(V, "output", output);
-  varset_put(V, "inputs", strbuf_collect(B));
-  vexec(target->tools[CT_LD].bin, VXMA, seprep(target->tools[CT_LD].flags, V),
-        NULL, "linking %s/libmain.so\n", target->libdir);
+  if (update) 
+    vexec(get_native_compiler(CT_LD, target),
+          VXMA, seprep(get_native_flags(CT_LD, target),
+                       varset_putm(varset_target(),
+                                   "output", output,
+                                   "inputs", strbuf_collect(B), 
+                                   NULL)),
+          NULL, "linking %s/libmain.so\n", target->libdir);
 }

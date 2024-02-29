@@ -95,3 +95,13 @@ char **seprep(char *str, varset_t *V)
 {
   return sepstr(replace_vars(str, V), NULL);
 }
+
+varset_t *varset_putm(varset_t *V, ...)
+{
+  va_list ap;
+  char *name, *value;
+  va_start(ap, V);
+  while((name=va_arg(ap,char*))) varset_put(V, name, va_arg(ap,char*));
+  va_end(ap);
+  return V;
+}

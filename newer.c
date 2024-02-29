@@ -25,3 +25,17 @@ int reqisnewer(char *tgt, char *req)
   if (R->tv_nsec > T->tv_nsec ) return 1;
   return 0;
 }
+
+// a better name for reqisnewer
+int stale(char *obj, char *src)
+{
+  return reqisnewer(obj, src); 
+}
+
+int stalea(char *obj, char **src)
+{
+  int i;
+  if (!src) return 0;
+  for(i=0;src[i];i++) if (reqisnewer(obj, src[i])) return 1;
+  return 0;
+}

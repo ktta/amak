@@ -3,18 +3,12 @@
 void compile_resources(int force)
 {
   char **resfiles;
-  int i;
   varset_t *V;
 
-  if (!force)
-  {
-    resfiles= find_files("res", NULL, 0);
-    for(i=0;resfiles[i];i++)
-      if (reqisnewer(aPT_RESOURCESZIP, resfiles[i]))
-         break;
-    if (!resfiles[i] &&  !reqisnewer(aPT_RESOURCESZIP, aPT_MANIFEST))
-       return ;
-  }
+  if (!force && !stale(aPT_RESOURCESZIP, aPT_MANIFEST) 
+             && (resfiles= find_files("res", NULL, 0))
+             && !stalea(aPT_RESOURCESZIP, resfiles))
+     return ;
 
   V= varset_cvars();
 
