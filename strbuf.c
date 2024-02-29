@@ -1,10 +1,3 @@
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-
-#include "strbuf.h"
 
 struct strbuf {
    struct strbuf *prev,*next;

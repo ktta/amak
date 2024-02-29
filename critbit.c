@@ -1,10 +1,3 @@
-#include <stdio.h> 
-#include <stdint.h> 
-#include <string.h> 
-#include <stdlib.h> 
-#include <sys/types.h> 
-#include <errno.h> 
-#include "critbit.h"
 
 typedef struct
 {
