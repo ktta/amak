@@ -15,7 +15,6 @@
 #include "native.c"
 #include "cvar.c"
 #include "repvar.c"
-#include "cook.c"
 #include "data.c"
 #include "clean.c"
 #include "fileop.c"
