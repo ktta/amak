@@ -7,3 +7,9 @@ amak: amak.c
 
 amak.c: inc.c listfiles.sh $(SRCFILES)
 	cat $(SRCFILES) > $@
+
+data.c: data/* mkdata
+	./mkdata
+
+mkdata: mkdata.c
+	$(CC) -o $@ $^
