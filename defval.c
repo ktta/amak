@@ -8,7 +8,7 @@
 #define DEFVAL_BUILD_TOOL_SEARCH   "%sdk%/build-tools"
 
 #define DEFVAL_JAVAC               "%studio%/jre/bin/javac"
-#define DEFVAL_JAVACFLAGS          "-source %java_version% -target %java_version% -d " aPT_JAVAOBJ  " -bootclasspath %android_jar%"
+#define DEFVAL_JAVACFLAGS          "-source %java_version% -target %java_version% -d " aPT_JAVAOBJ  " -bootclasspath %android_jar% %input% %Rjava%"
 #define DEFVAL_JAVA_VERSION        "1.6"
 #define DEFVAL_ANDROID_JAR         "%sdk%/platforms/android-%android_version%/android.jar"
 
