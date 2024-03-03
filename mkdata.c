@@ -15,6 +15,7 @@ struct dfile
   { "strings.xml",         1 },
   { "minimal.ini",         1 },
   { aFN_KEYSTORE,          0 },
+  { aFN_STYLESXML,         1 },
   { NULL                     }
 };
 

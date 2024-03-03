@@ -17,6 +17,7 @@
         <activity
              android:name="%package_name%.MainActivity"
              android:label="%display_name%"
+             android:theme="@style/AppTheme"
              android:screenOrientation="%orientation%"
              android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|density|screenSize|smallestScreenSize">
            <intent-filter>

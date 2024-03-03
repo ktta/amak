@@ -103,3 +103,9 @@ void make_strings(int force)
   if (!force && file_exists(aPT_STRINGSXML)) return ;
   write_file_string(aPT_STRINGSXML, data_get(aFN_STRINGSXML, NULL));
 }
+
+void make_styles(int force)
+{
+  if (force || !file_exists(aPT_STYLESXML)) 
+     write_file_string(aPT_STYLESXML, data_get(aFN_STYLESXML, NULL));
+}

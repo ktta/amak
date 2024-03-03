@@ -23,7 +23,8 @@
 
 
 #define aPT_RESOURCESZIP              "build/resources.zip"
-#define aPT_UNALIGNEDAPK              "build/unaligned.apk"
+#define aFN_UNALIGNEDAPK              "unaligned.apk" 
+#define aPT_UNALIGNEDAPK              "build/" aFN_UNALIGNEDAPK
 #define aPT_CLASSESDEX                "build/classes.dex"
 #define aPT_UNSIGNEDAPK               "build/unsigned.apk"
 
@@ -32,4 +33,6 @@
 #define aFN_STRINGSXML                "strings.xml"
 #define aPT_STRINGSXML                aPT_RESVALUES "/" aFN_STRINGSXML
 
+#define aFN_STYLESXML                 "styles.xml"
+#define aPT_STYLESXML                 aPT_RESVALUES "/" aFN_STYLESXML
 

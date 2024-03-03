@@ -34,7 +34,7 @@ doit:
   scallenz(chdir("build"), "chdir(build)");
   for(i=0;(target=cvars.targets[i]);i++)
   {
-    vexec("zip", "-u", aPT_UNALIGNEDAPK, "-p",
+    vexec("zip", "-u", aFN_UNALIGNEDAPK, "-p",
                  mkpath(target->libdir+strlen("build/"), aFN_LIBMAINSO, NULL),
           NULL, "copying native %s code\n", target->name);
   }

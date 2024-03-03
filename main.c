@@ -139,6 +139,7 @@ static const struct mcom com[]=
     make_dirs();
     make_manifest(force);
     make_strings(force);
+    make_styles(force);
     make_activity(force);
     make_keystore();
     break;

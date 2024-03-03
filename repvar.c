@@ -56,6 +56,8 @@ char *replace_vars(const char *input, varset_t *set)
   char buf[200];
   strbuf_t *B;
 
+  if (!input) return NULL;
+
   B= strbuf_init();
   while(1)
   {
@@ -112,5 +114,7 @@ varset_t *varset_putm(varset_t *V, ...)
 char *cook_ini_var
   (char *sec, char *key, char *defvalue, varset_t *V)
 {
-  return replace_vars(ini_getstr(cfg, sec, key, defvalue),V);
+  char *src;
+  src= ini_getstr(cfg, sec, key, defvalue);
+  return src ? replace_vars(src,V) : NULL;
 }

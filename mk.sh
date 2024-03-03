@@ -1,3 +1,3 @@
 #!/bin/sh
 
-gcc -o amak -c inc.c -g -Wall
+gcc -o amak inc.c -g -Wall
