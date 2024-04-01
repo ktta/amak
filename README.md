@@ -11,9 +11,13 @@ necessary source/build directory structure for you.
 Usage
 -----
 
-- Download amak.c and compile it. Put the binary somewhere convenient.
+- Clone this repo and run 'make' in the repo directory. 
 
-$ cc -o amak amak.c  && sudo mv amak /usr/bin
+$ git clone https://github.com/ktta/amak && cd amak && make
+
+- Put the binary somewhere convenient.
+
+$ sudo mv amak /usr/bin
 
 - Find your Android SDK installation and Android Studio installation if
   you have it. If you don't, you will need a Java compiler from somewhere 
