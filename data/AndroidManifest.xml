@@ -8,6 +8,7 @@
 
     <uses-sdk android:minSdkVersion="%android_version%" />
        %permissions%
+       %features%
 
     <!-- This .apk has Java code, so set hasCode to true. -->
     <application android:label="%display_name%" android:hasCode="true">

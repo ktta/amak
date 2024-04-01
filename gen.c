@@ -93,6 +93,7 @@ void make_manifest(int force)
                                      DEFVAL_DISPLAY_NAME));
   varset_put(V, "orientation", ini_getstr(cfg, "package", "orientation", 
                                      DEFVAL_ORIENTATION));
+  varset_put(V, "features", ini_getstr(cfg, "package", "features", ""));
   encode_permissions(V);
 
   write_file_string(aPT_MANIFEST, replace_vars(data_get(aFN_MANIFEST,NULL),V));
